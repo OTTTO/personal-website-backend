@@ -1,0 +1,11 @@
+# compiled output
+/dist
+/node_modules
+/build
+
+# env variables
+.env
+.env.dev
+
+# OS
+.DS_Store
