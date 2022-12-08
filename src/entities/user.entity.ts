@@ -8,7 +8,7 @@ export class User {
   @Field(() => String)
   id: string;
 
-  @Column({unique: true})
+  @Column({ unique: true })
   @Field(() => String)
   email: string;
 
@@ -18,5 +18,5 @@ export class User {
 
   @Column()
   @Field(() => String)
-  role: 'ADMIN'|'USER';
+  role: 'ADMIN' | 'USER';
 }

@@ -1,8 +1,11 @@
 # personal-website-backend
-Backend for my personal website, will provide an API for the admin to update the personal website through the admin panel and an API for the frontend to consume this data.
+
+Backend for my personal website, will provide an API for the admin to update the personal website through the admin panelx and an API for the frontend to consume this data.
 
 ## Installation
+
 ### Install architecture specific modules
+
 ```bash
 $ docker compose run web npm install
 ```
