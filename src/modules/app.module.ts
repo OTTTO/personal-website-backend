@@ -2,6 +2,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserModule } from './user.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoSchemaFile: true,
       sortSchema: true,
       playground: true,
+      introspection: true,
     }),
     TypeOrmModule.forRoot({
       keepConnectionAlive: true,
@@ -22,6 +24,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    UserModule,
   ],
 })
 export class AppModule {}

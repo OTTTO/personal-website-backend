@@ -14,5 +14,5 @@ export class User {
 
   @Column()
   @Field(() => String)
-  role: string;
+  role: 'ADMIN'|'USER';
 }
