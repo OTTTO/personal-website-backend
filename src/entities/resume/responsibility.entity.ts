@@ -13,6 +13,10 @@ export class Responsibility {
   @Field(() => String)
   details: string;
 
+  @Column()
+  @Field(() => String)
+  experienceId: string;
+
   @ManyToOne(() => Experience, (experience) => experience.responsibilities)
   experience: Experience;
 }

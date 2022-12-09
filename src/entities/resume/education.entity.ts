@@ -21,6 +21,10 @@ export class Education {
   @Field(() => String)
   time: string;
 
+  @Column()
+  @Field(() => String)
+  userId: string;
+
   @ManyToOne(() => User, (user) => user.educations)
   user: User;
 }

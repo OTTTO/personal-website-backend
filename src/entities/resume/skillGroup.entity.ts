@@ -17,6 +17,10 @@ export class SkillGroup {
   @Field(() => String)
   skills: string;
 
+  @Column()
+  @Field(() => String)
+  userId: string;
+
   @ManyToOne(() => User, (user) => user.skillGroups)
   user: User;
 }

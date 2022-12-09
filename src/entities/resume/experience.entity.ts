@@ -12,10 +12,6 @@ export class Experience {
 
   @Column()
   @Field(() => String)
-  name: string;
-
-  @Column()
-  @Field(() => String)
   role: string;
 
   @Column()
@@ -29,6 +25,10 @@ export class Experience {
   @Column()
   @Field(() => String)
   time: string;
+
+  @Column()
+  @Field(() => String)
+  userId: string;
 
   @ManyToOne(() => User, (user) => user.experiences)
   user: User;
