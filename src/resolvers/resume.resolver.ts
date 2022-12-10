@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Context, ResolveField, Parent } from '@nestjs/graphql';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SkillGroupInput } from 'inputs/skillGroup.input';
@@ -13,8 +13,9 @@ import { ExperienceInput } from 'inputs/experience.input';
 import { EducationInput } from 'inputs/education.input';
 import { ResponsibilityInput } from 'inputs/responsibility.input';
 import { UserInputError } from 'apollo-server-express';
+import { Resume } from 'models/resume.model';
 
-@Resolver()
+@Resolver(() => Resume)
 export class ResumeResolver {
   constructor(
     @InjectRepository(SkillGroup) private readonly skillGroupRepository: Repository<SkillGroup>,
@@ -23,6 +24,19 @@ export class ResumeResolver {
     @InjectRepository(Education) private readonly educationRepository: Repository<Education>,
     private readonly authService: AuthService,
   ) {}
+
+  @Query(() => Resume, { name: 'resume' })
+  @UseGuards(AuthGuard)
+  async getResume(@Context('req') req) {
+    const resume = new Resume();
+    resume.skillGroupList = await this.getSkillGroups(req);
+    resume.experienceList = await this.getExperience(req);
+    for (const experience of resume.experienceList) {
+      experience.responsibilities = await this.getResponsibilities(experience.id, req);
+    }
+    resume.educationList = await this.getEducation(req);
+    return resume;
+  }
 
   @Mutation(() => Boolean)
   @UseGuards(AuthGuard)
