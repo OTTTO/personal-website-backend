@@ -1,4 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
+import { ResponsibilityInput } from './responsibility.input';
 
 @InputType()
 export class ExperienceInput {
@@ -16,4 +17,7 @@ export class ExperienceInput {
 
   @Field()
   time!: string;
+
+  @Field(() => [ResponsibilityInput])
+  responsibilities!: ResponsibilityInput[];
 }

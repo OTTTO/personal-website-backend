@@ -4,11 +4,13 @@ import { Education } from 'entities/resume/education.entity';
 import { Experience } from 'entities/resume/experience.entity';
 import { Responsibility } from 'entities/resume/responsibility.entity';
 import { SkillGroup } from 'entities/resume/skillGroup.entity';
+import { User } from 'entities/user/user.entity';
 import { ResumeResolver } from 'resolvers/resume.resolver';
 import { AuthModule } from './auth.module';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([User]),
     TypeOrmModule.forFeature([SkillGroup]),
     TypeOrmModule.forFeature([Experience]),
     TypeOrmModule.forFeature([Responsibility]),

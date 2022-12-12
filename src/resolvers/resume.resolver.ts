@@ -14,10 +14,13 @@ import { EducationInput } from 'inputs/education.input';
 import { ResponsibilityInput } from 'inputs/responsibility.input';
 import { UserInputError } from 'apollo-server-express';
 import { Resume } from 'models/resume.model';
+import { User } from 'entities/user/user.entity';
+import { ResumeInput } from 'inputs/resume.input';
 
 @Resolver(() => Resume)
 export class ResumeResolver {
   constructor(
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(SkillGroup) private readonly skillGroupRepository: Repository<SkillGroup>,
     @InjectRepository(Experience) private readonly experienceRepository: Repository<Experience>,
     @InjectRepository(Responsibility) private readonly responsibilityRepository: Repository<Responsibility>,
@@ -26,16 +29,48 @@ export class ResumeResolver {
   ) {}
 
   @Query(() => Resume, { name: 'resume' })
-  @UseGuards(AuthGuard)
-  async getResume(@Context('req') req) {
+  async getResume() {
     const resume = new Resume();
-    resume.skillGroupList = await this.getSkillGroups(req);
-    resume.experienceList = await this.getExperience(req);
+    const admin = await this.userRepository.findOneBy({ role: 'ADMIN' });
+    resume.skillGroupList = await this.skillGroupRepository.findBy({ userId: admin.id });
+    resume.experienceList = await this.experienceRepository.findBy({ userId: admin.id });
     for (const experience of resume.experienceList) {
-      experience.responsibilities = await this.getResponsibilities(experience.id, req);
+      experience.responsibilities = await this.responsibilityRepository.findBy({ experienceId: experience.id });
     }
-    resume.educationList = await this.getEducation(req);
+    resume.educationList = await this.educationRepository.findBy({ userId: admin.id });
     return resume;
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(AuthGuard)
+  async upsertResume(@Args('resume') resume: ResumeInput, @Context('req') req) {
+    const userId = this.authService.getUserId(req);
+
+    //Techincal Skills
+    if (resume.skillGroups) {
+      for (const skillGroup of resume.skillGroups) {
+        await this.skillGroupRepository.save({ ...skillGroup, userId });
+      }
+    }
+
+    //Professional Experience
+    if (resume.experience) {
+      for (const experience of resume.experience) {
+        const exp = await this.experienceRepository.save({ ...experience, userId });
+        for (const responsibility of experience.responsibilities) {
+          await this.responsibilityRepository.save({ ...responsibility, experienceId: exp.id });
+        }
+      }
+    }
+
+    //Education
+    if (resume.education) {
+      for (const education of resume.education) {
+        await this.educationRepository.save({ ...education, userId });
+      }
+    }
+
+    return true;
   }
 
   @Mutation(() => Boolean)

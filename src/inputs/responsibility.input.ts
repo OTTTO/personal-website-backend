@@ -5,8 +5,8 @@ export class ResponsibilityInput {
   @Field({ nullable: true })
   id?: string;
 
-  @Field()
-  experienceId!: string;
+  @Field({ nullable: true })
+  experienceId?: string;
 
   @Field()
   details!: string;
