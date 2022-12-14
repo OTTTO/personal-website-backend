@@ -21,6 +21,6 @@ export class ExperienceInput {
   @Field()
   time!: string;
 
-  @Field(() => [ResponsibilityInput])
-  responsibilities!: ResponsibilityInput[];
+  @Field(() => [ResponsibilityInput], { nullable: true })
+  responsibilities?: ResponsibilityInput[];
 }

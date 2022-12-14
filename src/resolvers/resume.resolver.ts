@@ -16,6 +16,7 @@ import { UserInputError } from 'apollo-server-express';
 import { Resume } from 'models/resume.model';
 import { User } from 'entities/user/user.entity';
 import { ResumeInput } from 'inputs/resume.input';
+import { group } from 'console';
 
 @Resolver(() => Resume)
 export class ResumeResolver {
@@ -43,27 +44,79 @@ export class ResumeResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(AuthGuard)
-  async upsertResume(@Args('resume') resume: ResumeInput, @Context('req') req) {
+  async updateResume(@Args('resume') resume: ResumeInput, @Context('req') req) {
     const userId = this.authService.getUserId(req);
 
     //Techincal Skills
+    const skillGroups = await this.skillGroupRepository.findBy({ userId });
+    const skillGroupIds = skillGroups.map((group) => group.id);
+    const resumeSkillGroupIds = resume.skillGroups.map((group) => group.id);
+
+    skillGroupIds.forEach(async (id) => {
+      if (!resumeSkillGroupIds.includes(id)) {
+        await this.skillGroupRepository.delete({ id });
+      }
+    });
+
     if (resume.skillGroups) {
       for (const skillGroup of resume.skillGroups) {
         await this.skillGroupRepository.save({ ...skillGroup, userId });
       }
     }
 
-    //Professional Experience
+    //Professional Experience and Responsibilities
+    ////Delete Experience
+    const experience = await this.experienceRepository.findBy({ userId });
+    const experienceIds = experience.map((exp) => exp.id);
+    const resumeExperienceIds = resume.education.map((exp) => exp.id);
+
+    experienceIds.forEach(async (id) => {
+      if (!resumeExperienceIds.includes(id)) {
+        const responsibilities = await this.responsibilityRepository.findBy({ experienceId: id });
+        for (const responsibility of responsibilities) {
+          await this.responsibilityRepository.delete(responsibility);
+        }
+        await this.experienceRepository.delete({ id });
+      }
+    });
+
     if (resume.experience) {
       for (const experience of resume.experience) {
-        const exp = await this.experienceRepository.save({ ...experience, userId });
-        for (const responsibility of experience.responsibilities) {
-          await this.responsibilityRepository.save({ ...responsibility, experienceId: exp.id });
+        ////Delete Responsibility
+        const responsibility = await this.responsibilityRepository.findBy({ experienceId: experience.id });
+        const responsibilityIds = responsibility.map((res) => res.id);
+        const resumeResponsibilityIds = experience.responsibilities.map((res) => res.id);
+
+        responsibilityIds.forEach(async (id) => {
+          if (!resumeResponsibilityIds.includes(id)) {
+            await this.responsibilityRepository.delete({ id });
+          }
+        });
+
+        ////Save Experience and Responsibility
+        if (experience.responsibilities.length == 0) {
+          delete experience.responsibilities;
+          await this.experienceRepository.save({ ...experience, userId });
+        } else {
+          await this.experienceRepository.save({ ...experience, userId });
+          for (const responsibility of experience.responsibilities) {
+            await this.responsibilityRepository.save({ ...responsibility, experienceId: experience.id });
+          }
         }
       }
     }
 
     //Education
+    const education = await this.educationRepository.findBy({ userId });
+    const educationIds = education.map((edu) => edu.id);
+    const resumeEducationIds = resume.education.map((edu) => edu.id);
+
+    educationIds.forEach(async (id) => {
+      if (!resumeEducationIds.includes(id)) {
+        await this.educationRepository.delete({ id });
+      }
+    });
+
     if (resume.education) {
       for (const education of resume.education) {
         await this.educationRepository.save({ ...education, userId });

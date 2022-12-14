@@ -38,6 +38,6 @@ export class Experience {
   user: User;
 
   @OneToMany(() => Responsibility, (responsibility) => responsibility.experience, { cascade: true })
-  @Field(() => [Responsibility])
-  responsibilities: Responsibility[];
+  @Field(() => [Responsibility], { nullable: true })
+  responsibilities?: Responsibility[];
 }
