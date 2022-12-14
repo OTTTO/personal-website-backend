@@ -7,6 +7,9 @@ export class ExperienceInput {
   id?: string;
 
   @Field()
+  position!: number;
+
+  @Field()
   role!: string;
 
   @Field()

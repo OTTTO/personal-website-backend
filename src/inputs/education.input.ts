@@ -6,6 +6,9 @@ export class EducationInput {
   id?: string;
 
   @Field()
+  position!: number;
+
+  @Field()
   institution!: string;
 
   @Field()

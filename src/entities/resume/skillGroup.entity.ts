@@ -10,6 +10,10 @@ export class SkillGroup {
   id: string;
 
   @Column()
+  @Field(() => Number)
+  position: number;
+
+  @Column()
   @Field(() => String)
   name: string;
 

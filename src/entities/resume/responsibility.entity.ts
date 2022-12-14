@@ -10,6 +10,10 @@ export class Responsibility {
   id: string;
 
   @Column()
+  @Field(() => Number)
+  position: number;
+
+  @Column()
   @Field(() => String)
   details: string;
 

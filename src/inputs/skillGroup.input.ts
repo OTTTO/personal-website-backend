@@ -6,6 +6,9 @@ export class SkillGroupInput {
   id?: string;
 
   @Field()
+  position!: number;
+
+  @Field()
   name!: string;
 
   @Field()

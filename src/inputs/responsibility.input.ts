@@ -5,6 +5,9 @@ export class ResponsibilityInput {
   @Field({ nullable: true })
   id?: string;
 
+  @Field()
+  position!: number;
+
   @Field({ nullable: true })
   experienceId?: string;
 

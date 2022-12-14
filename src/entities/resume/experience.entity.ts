@@ -11,6 +11,10 @@ export class Experience {
   id: string;
 
   @Column()
+  @Field(() => Number)
+  position: number;
+
+  @Column()
   @Field(() => String)
   role: string;
 

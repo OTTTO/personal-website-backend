@@ -10,6 +10,10 @@ export class Education {
   id: string;
 
   @Column()
+  @Field(() => Number)
+  position: number;
+
+  @Column()
   @Field(() => String)
   institution: string;
 
