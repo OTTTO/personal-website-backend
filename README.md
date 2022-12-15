@@ -1,8 +1,20 @@
 # personal-website-backend
 
-Backend for my personal website, will provide an API for the admin to update the personal website through the admin panelx and an API for the frontend to consume this data.
+Backend for my personal website, this will provide an API for the admin to update the personal website through the admin panel and an API for the frontend to consume this data.
 
-## Installation
+## Getting Started
+
+### Create .env file
+
+```
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=password
+POSTGRES_DB_NAME=pwb
+GRAPHQL_PLAYGROUND=true
+JWT_SECRET=secret
+```
 
 ### Install architecture specific modules
 
@@ -10,22 +22,8 @@ Backend for my personal website, will provide an API for the admin to update the
 $ docker compose run web npm install
 ```
 
-## Running the app
+### Running the app locally
 
 ```bash
-# development
 $ docker compose up
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
