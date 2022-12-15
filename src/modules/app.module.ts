@@ -11,8 +11,8 @@ import { UserModule } from './user.module';
       driver: ApolloDriver,
       autoSchemaFile: true,
       sortSchema: true,
-      playground: true,
-      introspection: true,
+      playground: Boolean(process.env.GRAPHQL_PLAYGROUND),
+      introspection: Boolean(process.env.GRAPHQL_PLAYGROUND),
     }),
     TypeOrmModule.forRoot({
       keepConnectionAlive: true,

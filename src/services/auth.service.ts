@@ -19,7 +19,7 @@ export class AuthService {
         {
           userId: user.id,
         },
-        'secret',
+        process.env.JWT_SECRET,
         { expiresIn: '1h' },
       );
     }
@@ -29,7 +29,7 @@ export class AuthService {
   async verifyAccessToken(accessToken: string) {
     let valid: boolean;
     try {
-      jwt.verify(accessToken, 'secret');
+      jwt.verify(accessToken, process.env.JWT_SECRET);
       valid = true;
     } catch {
       valid = false;
