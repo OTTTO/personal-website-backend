@@ -25,7 +25,7 @@ export class ResumeResolver {
 
   @Query(() => Resume, { name: 'resume' })
   async getResume() {
-    //Always get admin (Dylan Beckwith) resume
+    //Always get admin resume
     const admin = await this.userRepository.findOneBy({ role: 'ADMIN' });
     const resume = new Resume();
     resume.skillGroupList = await this.skillGroupRepository.findBy({ userId: admin.id });
