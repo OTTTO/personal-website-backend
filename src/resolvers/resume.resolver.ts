@@ -65,11 +65,15 @@ export class ResumeResolver {
     ////Delete Experience
     const experience = await this.experienceRepository.findBy({ userId });
     const experienceIds = experience.map((exp) => exp.id);
-    const resumeExperienceIds = resume.education.map((exp) => exp.id);
+    const resumeExperienceIds = resume.experience.map((exp) => exp.id);
 
+    const removedIds = [];
     experienceIds.forEach(async (id) => {
       if (!resumeExperienceIds.includes(id)) {
+        removedIds.push(id);
         const responsibilities = await this.responsibilityRepository.findBy({ experienceId: id });
+
+        ////Delete Responsibilities Attached to an Experience
         for (const responsibility of responsibilities) {
           await this.responsibilityRepository.delete(responsibility);
         }
@@ -79,7 +83,8 @@ export class ResumeResolver {
 
     if (resume.experience) {
       for (const experience of resume.experience) {
-        ////Delete Responsibility
+        if (removedIds.includes(experience.id)) continue;
+        ////Delete Individual Responsibilities
         const responsibility = await this.responsibilityRepository.findBy({ experienceId: experience.id });
         const responsibilityIds = responsibility.map((res) => res.id);
         const resumeResponsibilityIds = experience.responsibilities.map((res) => res.id);
@@ -90,7 +95,7 @@ export class ResumeResolver {
           }
         });
 
-        ////Save Experience and Responsibility
+        ////Save Experience and Responsibilities
         if (experience.responsibilities.length == 0) {
           delete experience.responsibilities;
           await this.experienceRepository.save({ ...experience, userId });
