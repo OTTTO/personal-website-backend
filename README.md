@@ -7,7 +7,6 @@ Backend for my personal website, this will provide an API for the admin to updat
 ### Create .env file
 
 ```
-NODE_ENV=development
 POSTGRES_HOST=postgres
 POSTGRES_PORT=5432
 POSTGRES_USER=postgres

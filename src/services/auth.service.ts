@@ -55,4 +55,10 @@ export class AuthService {
     const token = this.getJwt(req);
     return this.parseJwt(token)['userId'];
   }
+
+  async isAdmin(req): Promise<boolean> {
+    const userId = this.getUserId(req);
+    const user = await this.userRepository.findOneBy({ id: userId });
+    return user && user.role === 'ADMIN';
+  }
 }

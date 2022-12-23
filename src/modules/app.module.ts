@@ -2,6 +2,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { HomeModule } from './home.module';
 import { ResumeModule } from './resume.module';
 import { UserModule } from './user.module';
 
@@ -27,6 +28,7 @@ import { UserModule } from './user.module';
     }),
     UserModule,
     ResumeModule,
+    HomeModule,
   ],
 })
 export class AppModule {}
