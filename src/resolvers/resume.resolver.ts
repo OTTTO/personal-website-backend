@@ -11,6 +11,7 @@ import { AuthService } from 'services/auth.service';
 import { Resume } from 'models/resume.model';
 import { User } from 'entities/user/user.entity';
 import { ResumeInput } from 'inputs/resume.input';
+import { ResumeHeader } from 'entities/resume/resumeHeader.entity';
 
 @Resolver(() => Resume)
 export class ResumeResolver {
@@ -20,6 +21,7 @@ export class ResumeResolver {
     @InjectRepository(Experience) private readonly experienceRepository: Repository<Experience>,
     @InjectRepository(Responsibility) private readonly responsibilityRepository: Repository<Responsibility>,
     @InjectRepository(Education) private readonly educationRepository: Repository<Education>,
+    @InjectRepository(ResumeHeader) private readonly resumeHeaderRepository: Repository<ResumeHeader>,
     private readonly authService: AuthService,
   ) {}
 
@@ -34,6 +36,7 @@ export class ResumeResolver {
       experience.responsibilities = await this.responsibilityRepository.findBy({ experienceId: experience.id });
     }
     resume.educationList = await this.educationRepository.findBy({ userId: admin.id });
+    resume.resumeHeader = (await this.resumeHeaderRepository.findOneBy({ userId: admin.id })) || new ResumeHeader();
     return resume;
   }
 
@@ -41,6 +44,9 @@ export class ResumeResolver {
   @UseGuards(AuthGuard)
   async updateResume(@Args('resume') resume: ResumeInput, @Context('req') req) {
     const userId = this.authService.getUserId(req);
+
+    //Save Resume Header
+    await this.resumeHeaderRepository.save({ ...resume.resumeHeader, userId });
 
     //Techincal Skills
     const skillGroups = await this.skillGroupRepository.findBy({ userId });
