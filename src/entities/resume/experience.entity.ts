@@ -1,6 +1,6 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 import { User } from 'entities/user/user.entity';
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Responsibility } from './responsibility.entity';
 
 @Entity()
@@ -40,4 +40,10 @@ export class Experience {
   @OneToMany(() => Responsibility, (responsibility) => responsibility.experience, { cascade: true })
   @Field(() => [Responsibility], { nullable: true })
   responsibilities?: Responsibility[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

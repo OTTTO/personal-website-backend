@@ -2,7 +2,7 @@ import { ObjectType, Field } from '@nestjs/graphql';
 import { Education } from 'entities/resume/education.entity';
 import { Experience } from 'entities/resume/experience.entity';
 import { SkillGroup } from 'entities/resume/skillGroup.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 @ObjectType()
@@ -31,4 +31,10 @@ export class User {
 
   @OneToMany(() => Education, (education) => education.user, { cascade: true })
   educations: Education[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
