@@ -45,7 +45,7 @@ export class AuthService {
 
   parseJwt(token: string) {
     try {
-      return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+      return jwt.decode(token);
     } catch (err) {
       throw new AuthenticationError('Malformed or missing authorization token');
     }
