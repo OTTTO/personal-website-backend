@@ -15,6 +15,7 @@ POSTGRES_DB_NAME=pwb
 ADMIN_EMAIL=admin@me.com
 ADMIN_PASSWORD=password
 JWT_SECRET=secret
+SALT_ROUNDS=7
 ```
 
 ### Install architecture specific modules
