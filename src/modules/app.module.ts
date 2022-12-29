@@ -6,14 +6,15 @@ import { HomeModule } from './home.module';
 import { ResumeModule } from './resume.module';
 import { UserModule } from './user.module';
 
+const isDev = process.env.NODE_ENV === 'development';
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
       sortSchema: true,
-      playground: process.env.NODE_ENV === 'development',
-      introspection: process.env.NODE_ENV === 'development',
+      playground: isDev,
+      introspection: isDev,
     }),
     TypeOrmModule.forRoot({
       keepConnectionAlive: true,
@@ -24,7 +25,7 @@ import { UserModule } from './user.module';
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB_NAME,
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: isDev,
     }),
     UserModule,
     ResumeModule,
