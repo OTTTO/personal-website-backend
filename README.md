@@ -1,6 +1,6 @@
 # personal-website-backend
 
-Backend for my personal website, this will provide an API for the admin to update the personal website through the admin panel and an API for the frontend to consume this data.
+Backend for my personal website, this will provide a GraphQL API for the admin to update the personal website through the admin panel and for the frontend to consume this data.
 
 ## Getting Started
 
