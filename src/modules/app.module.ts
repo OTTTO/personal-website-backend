@@ -5,10 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { HomeModule } from './home.module';
 import { ResumeModule } from './resume.module';
 import { UserModule } from './user.module';
+import { ConfigModule } from '@nestjs/config';
 
 const isDev = process.env.NODE_ENV === 'development';
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
