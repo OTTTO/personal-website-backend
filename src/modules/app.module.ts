@@ -7,7 +7,6 @@ import { ResumeModule } from './resume.module';
 import { UserModule } from './user.module';
 import { ConfigModule } from '@nestjs/config';
 
-const isDev = process.env.NODE_ENV === 'development';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -15,8 +14,8 @@ const isDev = process.env.NODE_ENV === 'development';
       driver: ApolloDriver,
       autoSchemaFile: true,
       sortSchema: true,
-      playground: isDev,
-      introspection: isDev,
+      playground: process.env.NODE_ENV === 'development',
+      introspection: process.env.NODE_ENV === 'development',
     }),
     TypeOrmModule.forRoot({
       keepConnectionAlive: true,
@@ -27,7 +26,7 @@ const isDev = process.env.NODE_ENV === 'development';
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB_NAME,
       autoLoadEntities: true,
-      synchronize: isDev,
+      synchronize: process.env.NODE_ENV === 'development',
     }),
     UserModule,
     ResumeModule,
