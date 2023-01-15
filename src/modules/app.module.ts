@@ -6,6 +6,7 @@ import { HomeModule } from './home.module';
 import { ResumeModule } from './resume.module';
 import { UserModule } from './user.module';
 import { ConfigModule } from '@nestjs/config';
+import { ProjectModule } from './project.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ConfigModule } from '@nestjs/config';
     UserModule,
     ResumeModule,
     HomeModule,
+    ProjectModule,
   ],
 })
 export class AppModule {}
