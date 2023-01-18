@@ -8,13 +8,17 @@ export class Home {
   @Field(() => String, { defaultValue: '' })
   id: string;
 
-  @Column({ length: 1200 })
+  @Column()
   @Field(() => String, { defaultValue: 'intro' })
   intro: string;
 
-  @Column({ length: 1200 })
+  @Column()
   @Field(() => String, { defaultValue: 'website info' })
   websiteInfo: string;
+
+  @Column({ type: 'uuid', nullable: true })
+  @Field(() => String, { nullable: true })
+  mainImg: string;
 
   @CreateDateColumn()
   createdAt: Date;

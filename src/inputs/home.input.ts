@@ -10,4 +10,7 @@ export class HomeInput {
 
   @Field()
   websiteInfo!: string;
+
+  @Field({ nullable: true })
+  mainImg?: string;
 }
