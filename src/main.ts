@@ -8,7 +8,6 @@ import path from 'path';
 declare const module: any;
 async function bootstrap() {
   await createDatabase({ ifNotExist: true });
-
   const httpsOptions =
     process.env.NODE_ENV !== 'development'
       ? {
