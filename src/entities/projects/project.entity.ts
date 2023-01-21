@@ -32,6 +32,10 @@ export class Project {
   @Field(() => Boolean, { nullable: true })
   openNewTab: boolean;
 
+  @Column()
+  @Field(() => Number)
+  position: number;
+
   @CreateDateColumn()
   @Field(() => Date)
   createdAt: Date;
